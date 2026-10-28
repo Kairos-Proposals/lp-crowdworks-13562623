@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ご提案｜ピアノ教室ホームページ 不具合修正・改善プラン – Kairos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;800&family=Noto+Sans+JP:wght@300;400;500;700&family=Cormorant+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1C1B1F;
+    --ivory:#FAF7F2;
+    --wood:#8B6F47;
+    --gold:#C9A373;
+    --violet:#564A7D;
+    --sand:#EDE6D8;
+    --line:rgba(28,27,31,0.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Noto Sans JP',sans-serif;
+    color:var(--ink);
+    background:var(--ivory);
+    line-height:1.9;
+    font-weight:400;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.serif{
+    font-family:'Shippori Mincho',serif;
+  }
+  .en{
+    font-family:'Cormorant Garamond',serif;
+    letter-spacing:0.12em;
+  }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{
+    max-width:1040px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  /* ===== 鍵盤・五線譜パーツ ===== */
+  .keyboard-strip{
+    height:46px;
+    width:100%;
+    background:
+      repeating-linear-gradient(90deg,
+        var(--ivory) 0 36px,
+        var(--ink) 36px 38px);
+    position:relative;
+  }
+  .keyboard-strip::after{
+    content:'';
+    position:absolute;
+    top:0;left:0;right:0;
+    height:60%;
+    background: repeating-linear-gradient(90deg,
+      transparent 0 24px,
+      var(--ink) 24px 46px,
+      transparent 46px 74px);
+    opacity:0.92;
+  }
+  .staff{
+    position:relative;
+    height:90px;
+  }
+  .staff::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.22),rgba(255,255,255,0.22)),
+      linear-gradient(rgba(255,255,255,0.22),rgba(255,255,255,0.22)),
+      linear-gradient(rgba(255,255,255,0.22),rgba(255,255,255,0.22)),
+      linear-gradient(rgba(255,255,255,0.22),rgba(255,255,255,0.22)),
+      linear-gradient(rgba(255,255,255,0.22),rgba(255,255,255,0.22));
+    background-size:100% 1px;
+    background-repeat:no-repeat;
+    background-position:0 18%, 0 34%, 0 50%, 0 66%, 0 82%;
+  }
+  .notes-float span{
+    position:absolute;
+    font-family:'Cormorant Garamond',serif;
+    color:rgba(250,247,242,0.5);
+    user-select:none;
+    pointer-events:none;
+  }
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;
+    background:linear-gradient(150deg,#201C33 0%, #39305B 55%, #564A7D 100%);
+    color:var(--ivory);
+    padding:120px 0 0;
+    overflow:hidden;
+  }
+  .hero .wrap{
+    position:relative;
+    z-index:2;
+    padding-bottom:70px;
+    text-align:center;
+  }
+  .badge{
+    display:inline-block;
+    font-size:12.5px;
+    letter-spacing:0.35em;
+    padding:7px 18px;
+    border:1px solid rgba(250,247,242,0.4);
+    border-radius:30px;
+    margin-bottom:34px;
+    color:var(--gold);
+  }
+  .hero h1{
+    font-size:clamp(28px,4.6vw,50px);
+    font-weight:800;
+    line-height:1.6;
+    margin-bottom:26px;
+  }
+  .hero h1 .accent{
+    color:var(--gold);
+  }
+  .hero p.lead{
+    font-size:15.5px;
+    color:rgba(250,247,242,0.82);
+    max-width:560px;
+    margin:0 auto 46px;
+  }
+  .hero .from{
+    font-size:13px;
+    letter-spacing:0.18em;
+    color:rgba(250,247,242,0.6);
+  }
+  .hero .from b{
+    color:var(--ivory);
+    font-size:15px;
+    letter-spacing:0.08em;
+  }
+
+  /* ===== セクション共通 ===== */
+  section{
+    padding:90px 0;
+    position:relative;
+  }
+  .eyebrow{
+    font-size:12.5px;
+    letter-spacing:0.3em;
+    color:var(--wood);
+    margin-bottom:14px;
+    font-weight:600;
+  }
+  .section-title{
+    font-size:clamp(23px,3.4vw,32px);
+    font-weight:700;
+    margin-bottom:28px;
+    line-height:1.7;
+  }
+  .lead-text{
+    font-size:15.5px;
+    color:#444;
+    max-width:700px;
+  }
+
+  /* ===== 理解セクション ===== */
+  .understand{
+    background:var(--sand);
+  }
+  .understand-grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:50px;
+    align-items:center;
+  }
+  .quote-box{
+    background:var(--ivory);
+    border:1px solid var(--line);
+    border-left:4px solid var(--violet);
+    padding:34px 32px;
+    border-radius:4px;
+  }
+  .quote-box p{
+    font-size:14.5px;
+    color:#444;
+    margin-bottom:14px;
+  }
+  .quote-box p:last-child{margin-bottom:0;}
+  .issue-list{
+    list-style:none;
+  }
+  .issue-list li{
+    font-size:14px;
+    padding:13px 0 13px 28px;
+    border-bottom:1px dashed var(--line);
+    position:relative;
+    color:#333;
+  }
+  .issue-list li::before{
+    content:'♪';
+    position:absolute;
+    left:0;
+    color:var(--wood);
+    font-family:'Cormorant Garamond',serif;
+    font-size:17px;
+  }
+  .issue-list li:last-child{border-bottom:none;}
+
+  /* ===== 価値カード ===== */
+  .value-section{
+    background:var(--ink);
+    color:var(--ivory);
+  }
+  .value-section .eyebrow{color:var(--gold);}
+  .value-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:22px;
+    margin-top:44px;
+  }
+  .value-card{
+    background:linear-gradient(160deg,rgba(250,247,242,0.06),rgba(250,247,242,0.02));
+    border:1px solid rgba(250,247,242,0.14);
+    border-radius:6px;
+    padding:30px 26px;
+    transition:transform .3s ease, border-color .3s ease;
+  }
+  .value-card:hover{
+    transform:translateY(-6px);
+    border-color:var(--gold);
+  }
+  .value-num{
+    font-family:'Cormorant Garamond',serif;
+    font-size:34px;
+    color:var(--gold);
+    margin-bottom:14px;
+    display:block;
+  }
+  .value-card h3{
+    font-size:17px;
+    margin-bottom:12px;
+    font-weight:600;
+  }
+  .value-card p{
+    font-size:13.5px;
+    color:rgba(250,247,242,0.72);
+  }
+
+  /* ===== 進め方 ===== */
+  .flow-section{
+    background:var(--ivory);
+  }
+  .flow-list{
+    counter-reset:step;
+    margin-top:50px;
+    border-top:1px solid var(--line);
+  }
+  .flow-item{
+    counter-increment:step;
+    display:grid;
+    grid-template-columns:90px 1fr;
+    gap:26px;
+    padding:28px 0;
+    border-bottom:1px solid var(--line);
+    align-items:start;
+  }
+  .flow-item .num{
+    font-family:'Cormorant Garamond',serif;
+    font-size:40px;
+    color:var(--wood);
+    line-height:1;
+  }
+  .flow-item .num::before{
+    content:counter(step,decimal-leading-zero);
+  }
+  .flow-item h3{
+    font-size:16.5px;
+    margin-bottom:8px;
+    font-weight:700;
+  }
+  .flow-item p{
+    font-size:13.8px;
+    color:#444;
+  }
+  .flow-item .tag{
+    display:inline-block;
+    margin-top:10px;
+    font-size:11.5px;
+    letter-spacing:0.08em;
+    color:var(--violet);
+    background:rgba(86,74,125,0.08);
+    padding:4px 10px;
+    border-radius:20px;
+  }
+
+  /* ===== クロージング ===== */
+  .closing{
+    background:linear-gradient(150deg,#39305B, #201C33 70%);
+    color:var(--ivory);
+    text-align:center;
+    padding:110px 0 0;
+  }
+  .closing .wrap{padding-bottom:60px;}
+  .closing h2{
+    font-size:clamp(22px,3.6vw,30px);
+    margin-bottom:22px;
+    line-height:1.7;
+  }
+  .closing p{
+    font-size:14.5px;
+    color:rgba(250,247,242,0.8);
+    max-width:560px;
+    margin:0 auto 38px;
+  }
+  .cta-btn{
+    display:inline-block;
+    background:var(--gold);
+    color:var(--ink);
+    padding:16px 46px;
+    border-radius:40px;
+    font-weight:700;
+    font-size:14.5px;
+    letter-spacing:0.1em;
+    box-shadow:0 10px 30px rgba(201,163,115,0.3);
+    transition:transform .25s ease;
+  }
+  .cta-btn:hover{transform:translateY(-3px);}
+  .signature{
+    margin-top:46px;
+    font-size:12.5px;
+    color:rgba(250,247,242,0.55);
+    letter-spacing:0.15em;
+  }
+  footer{
+    background:var(--ink);
+    color:rgba(250,247,242,0.5);
+    text-align:center;
+    font-size:12px;
+    padding:20px 0;
+    letter-spacing:0.08em;
+  }
+
+  @media(max-width:760px){
+    .understand-grid{grid-template-columns:1fr;}
+    .flow-item{grid-template-columns:56px 1fr;gap:16px;}
+    .flow-item .num{font-size:30px;}
+    section{padding:64px 0;}
+    .hero{padding-top:90px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="notes-float" aria-hidden="true">
+    <span style="top:18%;left:8%;font-size:34px;transform:rotate(-10deg);">♪</span>
+    <span style="top:30%;left:85%;font-size:26px;transform:rotate(12deg);">♫</span>
+    <span style="top:60%;left:18%;font-size:20px;">♩</span>
+    <span style="top:12%;left:60%;font-size:22px;transform:rotate(8deg);">♪</span>
+  </div>
+  <div class="wrap">
+    <span class="badge en">PROPOSAL FROM KAIROS</span>
+    <h1>一つの不具合も、<br>演奏の邪魔をしない。<br><span class="accent">その一音を、正しく届けるために。</span></h1>
+    <p class="lead">スマートフォンの不具合、文字化けするお問い合わせ、反映されない料金改定――<br>
+    稼働中のホームページを止めずに、ひとつずつ丁寧に整えるご提案です。</p>
+    <div class="from">ご提案者 ／ <b>Kairos（カイロス）- Web制作・システム開発チーム</b></div>
+  </div>
+  <div class="staff"></div>
+  <div class="keyboard-strip"></div>
+</div>
+
+<section class="understand">
+  <div class="wrap understand-grid">
+    <div>
+      <div class="eyebrow">UNDERSTANDING / ご依頼内容の理解</div>
+      <h2 class="section-title">レッスンは止まっても、<br>ホームページは止められない。</h2>
+      <div class="quote-box">
+        <p>ピアニストとして、そしてピアノ教室の運営者として、日々生徒さまと向き合っていらっしゃる中で、ホームページは今まさに「稼働中の教室の窓口」であること。だからこそ、デザインを大きく変える全面リニューアルではなく、<b>今の雰囲気を保ったまま、必要な箇所だけを着実に直す</b>ことが求められているのだと理解しております。</p>
+        <p>作業中もお問い合わせや閲覧を止めない。これは私たちにとっても最優先の前提条件です。</p>
+      </div>
+    </div>
+    <div>
+      <ul class="issue-list">
+        <li>氏名が漢字で届かないお問い合わせフォームの不具合</li>
+        <li>スマホのみで発生するメニュー・リンク・表示崩れ</li>
+        <li>編集しても本番サイトに反映されない料金・内容</li>
+        <li>Instagramへの導線が弱く、発信が伝わりにくい</li>
+        <li>ご自身で更新できる、わかりやすい運用体制がない</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="value-section">
+  <div class="wrap">
+    <div class="eyebrow">WHAT KAIROS OFFERS / Kairosがご提供できる価値</div>
+    <h2 class="section-title" style="max-width:640px;">デザインはそのままに、<br>鳴らすべき音を鳴らすための5つの対応</h2>
+    <div class="value-grid">
+      <div class="value-card">
+        <span class="value-num en">01</span>
+        <h3>無停止での修正対応</h3>
+        <p>本番環境への影響を最小限に抑えながら作業を進行。生徒さまからのお問い合わせ・閲覧を止めることなく、通常運営と並行して改善を行います。</p>
+      </div>
+      <div class="value-card">
+        <span class="value-num en">02</span>
+        <h3>スマホ不具合の個別修正</h3>
+        <p>メニューの誤作動、リンク先のズレ、文字崩れ、意図しない場所へのジャンプなど、PCでは見えない不具合をスマホ実機で一件ずつ検証・修正します。</p>
+      </div>
+      <div class="value-card">
+        <span class="value-num en">03</span>
+        <h3>お問い合わせフォームの是正</h3>
+        <p>氏名が漢字で受信できない原因（文字コード・プラグイン設定等）を調査し、正しく情報が届く状態へ修正。Instagram導線の設計もあわせてご提案します。</p>
+      </div>
+      <div class="value-card">
+        <span class="value-num en">04</span>
+        <h3>自分で更新できる仕組みづくり</h3>
+        <p>編集内容が反映されない原因（キャッシュ等）を解消し、料金変更など今後ご自身で行いたい更新作業について、わかりやすい手順書をお渡しします。</p>
+      </div>
+      <div class="value-card">
+        <span class="value-num en">05</span>
+        <h3>長期的な伴走サポート</h3>
+        <p>今回の修正で終わりではなく、教室の運営方針やサイトの構成を理解した上で、今後の機能改善や相談にも継続的に対応できる関係を築きます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="flow-section">
+  <div class="wrap">
+    <div class="eyebrow">FLOW / 進め方とスケジュールイメージ</div>
+    <h2 class="section-title">ご相談から納品まで、<br>無理のないテンポで進めます</h2>
+    <p class="lead-text">納期は「相談して決めたい」とのご希望に沿い、まずは現状確認とお見積りの確定から始めます。目安として、全体でおよそ2〜3週間程度を想定しています。</p>
+
+    <div class="flow-list">
+      <div class="flow-item">
+        <div class="num"></div>
+        <div>
+          <h3>現状確認・ヒアリング</h3>
+          <p>ホームページURLと管理画面情報を共有いただき、9項目のご依頼内容それぞれの不具合箇所を実際に確認します。スマホ・PC両方での動作チェックを行います。</p>
+          <span class="tag">目安：1〜2日</span>
+        </div>
+      </div>
+      <div class="flow-item">
+        <div class="num"></div>
+        <div>
+          <h3>お見積り・作業計画のご提示</h3>
+          <p>ご予算（3万円前後）の中で優先度を整理し、対応範囲と進行方法をご提案。稼働中サイトへの影響を抑える作業手順もあわせてご説明します。</p>
+          <span class="tag">目安：2〜3日</span>
+        </div>
+      </div>
+      <div class="flow-item">
+        <div class="num"></div>
+        <div>
+          <h3>修正・改善の実施</h3>
+          <p>フォーム・スマホ表示・写真差し替え・文章更新・料金反映・Instagram導線・SNSアイコン整理など、サイトを公開したまま順次対応します。</p>
+          <span class="tag">目安：1〜1.5週間</span>
+        </div>
+      </div>
+      <div class="flow-item">
+        <div class="num"></div>
+        <div>
+          <h3>動作確認・ご報告</h3>
+          <p>PC・スマートフォンの双方で最終チェックを実施し、修正内容を一つずつご報告。気になる点があればその場で調整します。</p>
+          <span class="tag">目安：2〜3日</span>
+        </div>
+      </div>
+      <div class="flow-item">
+        <div class="num"></div>
+        <div>
+          <h3>納品・運用手順のご案内</h3>
+          <p>今後ご自身で料金や文章を更新できるよう、簡単な操作手順書をお渡しします。その後も必要に応じて継続的にご相談いただけます。</p>
+          <span class="tag">以降、長期サポートへ</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="closing">
+  <div class="staff"></div>
+  <div class="wrap">
+    <div class="eyebrow" style="color:var(--gold);">NEXT STEP</div>
+    <h2>まずは、今のホームページを<br>見せていただくところから始めませんか。</h2>
+    <p>ピアノ教室の雰囲気を大切にしながら、生徒さまが安心してアクセスできるサイトへ。
+    不具合の詳細やURLを共有いただければ、具体的な診断とお見積りをご提示いたします。</p>
+    <a href="#" class="cta-btn">Kairosにメッセージを送る</a>
+    <div class="signature en">KAIROS — Web Design &amp; Development Team</div>
+  </div>
+  <div class="keyboard-strip"></div>
+</div>
+
+<footer>
+  © Kairos｜本提案はエヴァ EVA 様のご依頼内容に基づき作成しています
+</footer>
+
+</body>
+</html>
